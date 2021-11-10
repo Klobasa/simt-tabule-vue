@@ -1,9 +1,14 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/zastavky">Zastávky</router-link>
+  <div v-bind:style="{ 'backgroundImage': 'url(' + require('./assets/background/2.jpg') + ')' }">
+    <div class="container mt-5 mb-5 d-inline-block">
+      <div id="nav">
+        <router-link to="/">Home</router-link> |
+        <router-link to="/zastavky">Zastávky</router-link> |
+        <router-link to="/spoj">Spoj</router-link>
+      </div>
+      <router-view />
+    </div>
   </div>
-  <router-view />
 </template>
 
 <style>
@@ -26,5 +31,9 @@
 
 #nav a.router-link-exact-active {
   color: #42b983;
+}
+
+.container {
+  background-color: white;
 }
 </style>

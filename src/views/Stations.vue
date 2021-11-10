@@ -6,7 +6,7 @@
   </svg>
   <h2>Zastávky</h2>
   <ul class="list-group">
-    <li class="list-group-item" v-for="station in stations" :key="station.id"><router-link :to="{path: '/zastavky/' + station.urlName}">{{ station.name }}</router-link></li>
+    <li class="list-group-item" v-for="station in stations.stations" :key="station.id"><router-link :to="{path: '/zastavky/' + station.urlName}">{{ station.name }}</router-link></li>
     <li class="alert alert-danger" v-if="!stations.length">
       <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
       Seznam zastávek se nepodařilo načíst

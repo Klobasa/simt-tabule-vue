@@ -17,6 +17,11 @@ const routes = [
     path: "/zastavky/:stationId",
     name: "zastavka",
     component: () => import("../views/Station")
+  },
+  {
+    path: "/spoj",
+    name: "spoj",
+    component: () => import("../views/Trip")
   }
 ];
 

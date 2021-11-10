@@ -4,5 +4,9 @@ import router from "./router";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "jquery/src/jquery.js";
 import "bootstrap/dist/js/bootstrap.min.js";
+import { VueCookieNext } from "vue-cookie-next";
 
-createApp(App).use(router).mount("#app");
+const app = createApp(App)
+app.use(router)
+app.use(VueCookieNext)
+app.mount("#app")
