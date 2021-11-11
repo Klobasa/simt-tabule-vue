@@ -36,4 +36,20 @@
 .container {
   background-color: white;
 }
+
+.primary {
+  background-color: #e9ecef;
+}
+
+.primary, .title {
+  border-radius: 0.25rem;
+}
+
+.primary, .title {
+  padding: 0.5rem !important;
+}
+
+.title {
+  min-height: 3.5rem;
+}
 </style>
