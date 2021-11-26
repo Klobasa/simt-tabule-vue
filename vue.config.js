@@ -1,3 +1,3 @@
 module.exports = {
-  publicPath: '/simt-tabule/'
+  publicPath: '/simt-tabule-vue/'
 }
