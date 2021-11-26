@@ -87,7 +87,6 @@ export default {
     async callStationData() {
       const response = await fetch(this.url);
       this.stationData = await response.json();
-      console.log(this.stationData);
     },
     changeShowArrivals() {
       this.$cookie.setCookie("showArrivals", this.showArrivals);
@@ -116,22 +115,6 @@ export default {
   50% {
     opacity: 0;
   }
-}
-
-.line > .tram {
-  background-color: #f0be32;
-}
-
-.line > .trolleybus {
-  background-color: #1e9641;
-}
-
-.line > .bus {
-  background-color: #cd2837;
-}
-
-.line {
-  color: white;
 }
 
 .line.trolleybus .triangle {

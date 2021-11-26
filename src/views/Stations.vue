@@ -18,17 +18,36 @@
       </div>
     </div>
   </div>
- <!-- {{ this.filteredStations }}
-  <hr>
-  {{ this.stations }}
-  -->
-  <ul class="list-group">
-    <li class="list-group-item" v-for="station in filteredStations.stations || filteredStations" :key="station.id"><router-link :to="{path: '/zastavky/' + station.urlName}">{{ station.name }}</router-link></li>
-    <li class="alert alert-danger" v-if="!stations.length">
+
+  <div class="board">
+    <div class="boardHeader d-none d-sm-flex">
+      <div class="col-12 col-sm-6 col-md-4">Zastávka</div>
+      <div class="col-12 col-sm-6 col-md-8">Linky</div>
+    </div>
+    <div class="boardData" v-for="station in filteredStations.stations || filteredStations" :key="station.id">
+      <div class="boardDataPrimary">
+        <div class="col-12 col-sm-6 col-md-4"><router-link :to="{path: '/zastavky/' + station.urlName}"><span class="boardButton">{{ station.name }}</span></router-link></div>
+        <div class="col-12 col-sm-6 col-md-8 d-flex flex-row align-items-start flex-wrap">
+          <div v-for="line in station.lines" :key="line" class="line d-inline-block">
+            <div :class="line.traction" class="px-2 py-1 mr-1">
+              <span>{{ line.line }}</span>
+              <img src="../assets/line/tram.svg" alt="" v-if="line.traction === 'tram'">
+              <img src="../assets/line/trolleybus.svg" alt="" v-if="line.traction === 'trolleybus'">
+              <img src="../assets/line/bus.svg" alt="" v-if="line.traction === 'bus'">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="alert alert-danger" v-if="stations.length === 0">
       <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
       Seznam zastávek se nepodařilo načíst
-    </li>
-  </ul>
+    </div>
+    <div class="alert alert-warning" v-if="filteredStations.length === 0 && queryStation.length>0">
+      <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+      Hledaná zastávka neexistuje
+    </div>
+  </div>
 </template>
 
 <script>

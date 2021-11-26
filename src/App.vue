@@ -34,22 +34,75 @@
 }
 
 .container {
-  background-color: white;
-}
-
-.primary {
   background-color: #e9ecef;
 }
 
-.primary, .title {
+.line > .tram {
+  background-color: #f0be32;
+}
+
+.line > .trolleybus {
+  background-color: #1e9641;
+}
+
+.line > .bus {
+  background-color: #cd2837;
+}
+
+.line {
+  color: white;
+}
+
+.primary, .boardButton:hover {
+  background-color: #6c757d !important;
+}
+
+.primary, .title, .boardData, .boardButton, .line>.bus, .line>.trolleybus, .line>.tram {
   border-radius: 0.25rem;
 }
 
-.primary, .title {
+.primary, .title, .board .boardData {
   padding: 0.5rem !important;
+}
+.boardData .line {
+  margin: 0.2rem;
 }
 
 .title {
   min-height: 3.5rem;
+}
+
+.board {
+  text-align: left;
+}
+
+.board .boardHeader {
+  padding: 0.5rem !important;
+}
+
+.board .boardData {
+  background-color: #f8f9fa;
+}
+
+.board .boardData {
+  margin-bottom: 0.5rem !important;
+}
+
+.boardButton {
+  color: black;
+  padding: 0.375rem 0.75rem;
+  display: inline-block;
+  font-size: 1.1em;
+}
+
+.boardButton:hover {
+  color: #f8f9fa;
+}
+
+.board .boardData>.boardDataPrimary {
+  -webkit-box-align: center !important;
+  align-items: center !important;
+  display: flex;
+  flex-wrap: wrap;
 }
 </style>
