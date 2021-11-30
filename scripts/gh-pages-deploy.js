@@ -15,7 +15,9 @@ import fs from "fs";
     await execa("git", ["push", "origin", "HEAD:gh-pages", "--force"]);
     console.log("Remove folder");
     await execa("del", ["-r", folderName]);
+    console.log("Checkout master");
     await execa("git", ["checkout", "-f", "master"]);
+    console.log("Delete local gh-pages");
     await execa("git", ["branch", "-D", "gh-pages"]);
     console.log("Successfully deployed, check your settings");
   } catch (e) {
