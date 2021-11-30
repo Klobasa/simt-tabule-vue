@@ -14,7 +14,7 @@ import fs from "fs";
     console.log("Pushing to gh-pages...");
     await execa("git", ["push", "origin", "HEAD:gh-pages", "--force"]);
     console.log("Remove folder");
-    await execa("del", [folderName]);
+    await execa("del", ["/q", folderName]);
     console.log("Checkout master");
     await execa("git", ["checkout", "-f", "master"]);
     console.log("Delete local gh-pages");
