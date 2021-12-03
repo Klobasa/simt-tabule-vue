@@ -72,7 +72,7 @@ export default {
       stationData: [],
       interval: null,
       error: null,
-      url: "http://localhost:8080/zastavky/" + this.$route.params.stationId,
+      url: "http://89.221.222.235:8080//zastavky/" + this.$route.params.stationId,
       information: null,
       showArrivals: true
     };

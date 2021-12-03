@@ -57,12 +57,12 @@ export default {
   },
   methods: {
     async callPlayersId() {
-      const response = await fetch("http://localhost:8080/playersId")
+      const response = await fetch("http://89.221.222.235:8080/playersId")
       this.playersIdData = await response.json();
     },
     async callTripDetail() {
       clearInterval(this.interval)
-      this.url = "http://localhost:8080/spoj/" + this.playerId;
+      this.url = "http://89.221.222.235:8080/spoj/" + this.playerId;
       const response = await fetch(this.url);
       this.tripData = await response.json();
       console.log(this.tripData);
