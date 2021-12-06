@@ -67,7 +67,7 @@ export default {
   },
   methods: {
     async callData() {
-      const response = await fetch("http://89.221.222.235:8080/zastavky")
+      const response = await fetch(this.beUrl + "zastavky")
       this.stations = await response.json();
       this.filteredStations = this.stations;
     },
