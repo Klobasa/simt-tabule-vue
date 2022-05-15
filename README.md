@@ -22,3 +22,11 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+for deploy:
+Change to get to work on windows: 
+npm install –save-dev rimraf
+And change
+await execa(“rm”, [“-r”, folderName]);
+to
+await execa(“rimraf”, [folderName]);
