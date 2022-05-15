@@ -72,14 +72,13 @@ export default {
       stationData: [],
       interval: null,
       error: null,
-      url: this.beUrl + "zastavky/" + this.$route.params.stationId,
+      url: process.env.VUE_APP_ROOT_API + "zastavky/" + this.$route.params.stationId,
       information: null,
       showArrivals: true
     };
   },
   created() {
     this.showArrivals = this.$cookie.isCookieAvailable("showArrivals") ? this.$cookie.getCookie("showArrivals") : false;
-    console.log(this.showArrivals)
     this.callStationData();
     this.interval = setInterval(() => this.callStationData(), 10000);
   },

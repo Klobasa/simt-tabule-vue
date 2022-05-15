@@ -10,6 +10,5 @@ const app = createApp(App)
 app.use(router)
 app.use(VueCookieNext)
 
-app.config.globalProperties.beUrl = "https://simt-tabule.ga:8443/"
 
 app.mount("#app")

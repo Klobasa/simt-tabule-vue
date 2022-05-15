@@ -20,6 +20,11 @@ const routes = [
   },
   {
     path: "/spoj",
+    name: "spoje",
+    component: () => import("../views/Trips")
+  },
+  {
+    path: "/spoj/:playerId",
     name: "spoj",
     component: () => import("../views/Trip")
   }
