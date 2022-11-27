@@ -27,6 +27,11 @@ const routes = [
     path: "/spoj/:playerId",
     name: "spoj",
     component: () => import("../views/Trip")
+  },
+  {
+    path: "/jizdniDoby",
+    name: "jizdniDoby",
+    component: () => import("../views/Timetables")
   }
 ];
 

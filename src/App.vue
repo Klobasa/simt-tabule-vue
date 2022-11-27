@@ -8,8 +8,9 @@
     <div class="container mt-5 mb-5 d-inline-block">
       <div id="nav">
         <router-link to="/">Home</router-link> |
-        <router-link to="/zastavky">Zastávky</router-link> |
-        <router-link to="/spoj">Spoj</router-link>
+        <router-link to="/zastavky">Panely odjezdů</router-link> |
+        <router-link to="/spoj">Spoje</router-link> |
+        <router-link to="/jizdniDoby">Jízdní Doby</router-link>
       </div>
       <router-view />
     </div>
