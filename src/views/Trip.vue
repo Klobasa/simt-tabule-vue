@@ -70,7 +70,6 @@ export default {
     updated() {
       this.secondsSinceUpdate = Interval.fromDateTimes(DateTime.fromISO(this.tripData.dataGenerated), DateTime.now()).length("seconds");
       if (this.tripData.dataGenerated == null) this.secondsSinceUpdate = 600;
-      console.log(this.secondsSinceUpdate);
     },
     getCurrentTime() {
       this.time = Intl.DateTimeFormat(navigator.language, {

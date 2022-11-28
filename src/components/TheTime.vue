@@ -12,7 +12,7 @@ export default {
     };
   },
   created() {
-    this.timeInterval = setInterval(() => this.callCurrentTime(), 1000);
+    this.timeInterval = setInterval(() => this.callCurrentTime(), 250);
   },
   methods: {
     callCurrentTime() {

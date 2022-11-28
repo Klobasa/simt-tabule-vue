@@ -17,7 +17,7 @@
   <div class="board">
     <div class="boardHeader d-none d-sm-flex">
       <div class="col-12 col-sm-6 col-md-4">Zastávka</div>
-      <div class="col-12 col-sm-6 col-md-8">Linky</div>
+      <div class="col-12 col-sm-6 col-md-8">Linky <small>(nechtějí se načítat)</small></div>
     </div>
     <div class="boardData" v-for="station in filteredStations.stations || filteredStations" :key="station.id">
       <div class="boardDataPrimary">
