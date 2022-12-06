@@ -1,23 +1,23 @@
 <template>
-  {{ this.formatDateTime(this.datetime) }}
+  {{ this.formatDateTime(this.datetime, this.datetimeFormat) }}
 </template>
 
 <script>
 import { DateTime } from "luxon";
 export default {
   name: "FormatDateTime",
-  props: ["datetime"],
+  props: ["datetime", "datetimeFormat"],
 
   methods: {
-    formatDateTime(dt) {
-      let fdt = "";
-      if (typeof (dt) !== 'undefined') {
-        dt.replace("T", " ");
-        fdt = DateTime.fromISO(dt)
-          .toFormat("dd.MM.yyyy HH:mm:ss")
-         .toString();
+    formatDateTime(dateTime, dateTimeFormat) {
+      let formattedDateTime = "";
+      if (typeof (dateTime) !== 'undefined') {
+        dateTime.replace("T", " ");
+        formattedDateTime = DateTime.fromISO(dateTime)
+          .toFormat(dateTimeFormat)
+          .toString();
      }
-    return fdt;
+    return formattedDateTime;
   }
   }
 };

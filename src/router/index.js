@@ -32,6 +32,11 @@ const routes = [
     path: "/jizdniDoby",
     name: "jizdniDoby",
     component: () => import("../views/Timetables")
+  },
+  {
+    path: "/changelog",
+    name: "changelog",
+    component: () => import("../views/Changelog")
   }
 ];
 

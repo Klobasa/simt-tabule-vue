@@ -20,7 +20,7 @@
         </tr>
         <tr v-for="trip in tripData.trip" :key="trip.sequence" :class="{ 'table-success' : trip.isAtStation === 1}">
           <td> {{ trip.station }}</td>
-          <td><format-time :departure="trip.departure" /></td>
+          <td><format-date-time :datetime="trip.departure" :datetimeFormat="'HH:mm'" /></td>
           <td> <template v-if="trip.isAtStation === 1"><delay-counter :departure="trip.departure"></delay-counter></template></td>
         </tr>
         <tr v-if="tripData.line == null">
@@ -33,12 +33,12 @@
 
 <script>
 import DelayCounter from "../components/DelayCounter";
-import FormatTime from "../components/FormatTime";
+import FormatDateTime from "../components/FormatDateTime";
 import TheTime from "../components/TheTime";
 import { DateTime, Interval } from "luxon";
 
 export default {
-  components: { TheTime, FormatTime, DelayCounter },
+  components: { TheTime, FormatDateTime, DelayCounter },
   name: "Trip",
   data() {
     return {

@@ -12,7 +12,7 @@
   <div class="board">
     <div class="boardHeader d-none d-sm-flex">
       <div class="col-12">
-        Poslední aktualizace dat: <format-date-time :datetime="timetables.dataGenerated" />
+        Poslední aktualizace dat: <format-date-time :datetime="timetables.dataGenerated" :datetimeFormat="'dd.MM.yyyy HH:mm:ss'" />
       </div>
     </div>
     <div class="boardData col-12 col-md-6" v-for="timetable in timetables.timelines" :key="timetable.lineNumber">

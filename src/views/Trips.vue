@@ -7,7 +7,7 @@
             <h2>Aktuální spoje</h2>
           </div>
           <div class="col-12 col-sm-7 col-md-5 col-lg-4 text-sm-end">
-            {{ trips.timeGenerated }}
+             Poslední aktualizace: <format-date-time :datetime="trips.timeGenerated" :datetime-format="'HH:mm:ss'"></format-date-time>
           </div>
         </div>
       </div>
@@ -22,6 +22,15 @@
       <div class="col-sm-6 col-md-2">Aktuální zastávka</div>
       <div class="col-sm-6 col-md-2">Odchylka</div>
 
+    </div>
+
+    <div class="alert alert-primary" v-if="loading===true">
+      <img src="../assets/loading.gif" width="24"/>
+      Načítání...
+    </div>
+    <div class="alert alert-danger" v-if="loading === false && trips.length === 0">
+      <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+      Seznam spojů se nepodařilo načíst nebo nejede žádný spoj
     </div>
 
 
@@ -66,13 +75,15 @@
 
 <script>
 import DelayCounter from "../components/DelayCounter";
+import FormatDateTime from "../components/FormatDateTime";
 export default {
-  components: { DelayCounter },
+  components: { DelayCounter, FormatDateTime },
   name: "Trips",
   data() {
     return {
       trips: [],
-      timeInterval: null
+      timeInterval: null,
+      loading: true,
     };
   },
   created() {
@@ -83,6 +94,7 @@ export default {
     async callData() {
       const response = await fetch(process.env.VUE_APP_ROOT_API + "spoj");
       this.trips = await response.json();
+      this.loading = false;
     }
   },
   beforeUnmount() {

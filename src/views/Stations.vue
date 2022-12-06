@@ -17,8 +17,18 @@
   <div class="board">
     <div class="boardHeader d-none d-sm-flex">
       <div class="col-12 col-sm-6 col-md-4">Zastávka</div>
-      <div class="col-12 col-sm-6 col-md-8">Linky <small>(nechtějí se načítat)</small></div>
+      <div class="col-12 col-sm-6 col-md-8">Linky</div>
     </div>
+
+    <div class="alert alert-primary" v-if="loading===true">
+      <img src="../assets/loading.gif" width="24"/>
+      Načítání...
+    </div>
+    <div class="alert alert-danger" v-if="loading === false && stations.length === 0">
+      <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+      Seznam zastávek se nepodařilo načíst
+    </div>
+
     <div class="boardData" v-for="station in filteredStations.stations || filteredStations" :key="station.id">
       <div class="boardDataPrimary">
         <div class="col-12 col-sm-6 col-md-4"><router-link :to="{path: '/zastavky/' + station.urlName}"><span class="boardButton">{{ station.name }}</span></router-link></div>
@@ -34,10 +44,7 @@
         </div>
       </div>
     </div>
-    <div class="alert alert-danger" v-if="stations.length === 0">
-      <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-      Seznam zastávek se nepodařilo načíst
-    </div>
+
     <div class="alert alert-warning" v-if="filteredStations.length === 0 && queryStation.length>0">
       <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
       Hledaná zastávka neexistuje
@@ -54,7 +61,8 @@ export default {
     return {
       stations: [],
       queryStation: "",
-      filteredStations: []
+      filteredStations: [],
+      loading: true,
     };
   },
   created() {
@@ -62,9 +70,11 @@ export default {
   },
   methods: {
     async callData() {
+      this.loading = true;
       const response = await fetch(process.env.VUE_APP_ROOT_API + "zastavky")
       this.stations = await response.json();
       this.filteredStations = this.stations;
+      this.loading = false;
     },
     async filterStations() {
       this.filteredStations = computed(() => {

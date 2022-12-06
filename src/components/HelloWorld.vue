@@ -18,6 +18,9 @@
       <li>
         <a href="https://simt-mhd.net/" target="_blank" rel="noopener">Oficiální stránka hry</a>
       </li>
+      <li>
+        <router-link to="/changelog">Changelog</router-link>
+      </li>
     </ul>
   </div>
 </template>
