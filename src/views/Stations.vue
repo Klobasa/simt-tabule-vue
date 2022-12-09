@@ -34,11 +34,11 @@
         <div class="col-12 col-sm-6 col-md-4"><router-link :to="{path: '/zastavky/' + station.urlName}"><span class="boardButton">{{ station.name }}</span></router-link></div>
         <div class="col-12 col-sm-6 col-md-8 d-flex flex-row align-items-start flex-wrap">
           <div v-for="line in station.lines" :key="line" class="line d-inline-block">
-            <div :class="line.traction" class="px-2 py-1 mr-1">
+            <div :class="[line.traction === 2 ? 'tram' : line.traction === 1 ? 'trolleybus' : line.traction === 0 ? 'bus' : 'tractionUndefined']" class="px-2 py-1 mr-1">
               <span>{{ line.line }}</span>
-              <img src="../assets/line/tram.svg" alt="" v-if="line.traction === 'tram'">
-              <img src="../assets/line/trolleybus.svg" alt="" v-if="line.traction === 'trolleybus'">
-              <img src="../assets/line/bus.svg" alt="" v-if="line.traction === 'bus'">
+              <img src="../assets/line/tram.svg" alt="" v-if="line.traction === 2">
+              <img src="../assets/line/trolleybus.svg" alt="" v-if="line.traction === 1">
+              <img src="../assets/line/bus.svg" alt="" v-if="line.traction === 0">
             </div>
           </div>
         </div>

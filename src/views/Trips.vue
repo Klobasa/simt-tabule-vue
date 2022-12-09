@@ -34,16 +34,16 @@
     </div>
 
 
-    <div class="boardData" :class="trip.line.traction" v-for="trip in trips.tripHeader" :key="trip.id">
+    <div class="boardData" :class="[trip.line.traction === 2 ? 'tram' : trip.line.traction === 1 ? 'trolleybus' : trip.line.traction === 0 ? 'bus' : 'tractionUndefined']" v-for="trip in trips.tripHeader" :key="trip.id">
       <div class="boardDataPrimary">
 
         <div class="col-12 col-sm-2">
           <div class="line d-inline-block">
-            <div class="px-2 py-1 mr-1" :class="trip.line.traction">
+            <div class="px-2 py-1 mr-1" :class="[trip.line.traction === 2 ? 'tram' : trip.line.traction === 1 ? 'trolleybus' : trip.line.traction === 0 ? 'bus' : 'tractionUndefined']">
               <router-link :to="{path: '/spoj/' + trip.id}"><span class="biggerFont boardButton">{{ trip.line.line }}&nbsp;</span></router-link>
-              <img src="../assets/line/tram.svg" alt="" v-if="trip.line.traction === 'tram'">
-              <img src="../assets/line/trolleybus.svg" alt="" v-if="trip.line.traction === 'trolleybus'">
-              <img src="../assets/line/bus.svg" alt="" v-if="trip.line.traction === 'bus'">
+              <img src="../assets/line/tram.svg" alt="" v-if="trip.line.traction === 2">
+              <img src="../assets/line/trolleybus.svg" alt="" v-if="trip.line.traction === 1">
+              <img src="../assets/line/bus.svg" alt="" v-if="trip.line.traction === 0">
             </div>
           </div>
         <!--  <div class="line"><span class="boardButton" :class="trip.line.traction">{{ trip.line.line }} » {{ trip.endStation }}</span></div> -->

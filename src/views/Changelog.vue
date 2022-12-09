@@ -1,6 +1,13 @@
 <template>
  <h1>Changelog</h1>
 
+  <h5>8. 12. 2022</h5>
+    <p>- Změněn způsob rozhodování trakce</p>
+    <p>- V jízdních dobách přidána možnost výběru denní doby (zatím s jistými chybami)</p>
+
+  <h5>6. 12. 2022</h5>
+    <p>- Snad opraven problém s duplikací dat a pády/nenačítání s tím spojené</p>
+
   <h5>5. 12. 2022</h5>
     <p>- Opravena chyba, kdy občas zmizel celý seznam spojů</p>
     <p>- V seznamu zastávek se načítají linky</p>

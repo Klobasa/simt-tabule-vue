@@ -25,11 +25,11 @@
       <tr v-for="station in stationData.departures" :key="station.id" :class="{'arrival' : station.endStation === stationData.stationName}" v-show="station.endStation !== stationData.stationName || showArrivals">
         <th>
           <div class="line">
-            <div :class="station.traction">
+            <div :class="[station.traction === 2 ? 'tram' : station.traction === 1 ? 'trolleybus' : station.traction === 0 ? 'bus' : 'tractionUndefined']">
               {{ station.route.startsWith("X") ? station.line + "X" : station.line }}
-              <img src="../assets/line/tram.svg" alt="" v-if="station.traction === 'tram'">
-              <img src="../assets/line/trolleybus.svg" alt="" v-if="station.traction === 'trolleybus'">
-              <img src="../assets/line/bus.svg" alt="" v-if="station.traction === 'bus'">
+              <img src="../assets/line/tram.svg" alt="" v-if="station.traction === 2">
+              <img src="../assets/line/trolleybus.svg" alt="" v-if="station.traction === 1">
+              <img src="../assets/line/bus.svg" alt="" v-if="station.traction === 0">
             </div>
             <!--    <div class="triangle"></div> -->
           </div>

@@ -55,6 +55,10 @@
   background-color: #cd2837;
 }
 
+.line .tractionUndefined {
+  background-color: slategray;
+}
+
 .line {
   color: white;
 }
