@@ -14,6 +14,12 @@
       </div>
     </div>
 
+    <div class="errors" v-if="stationData.length === 0">
+      <div class="alert alert-danger" v-for="error in errors" :key="error">
+        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+        {{ error }}
+      </div>
+    </div>
     <table class="table table-hover">
       <thead>
       <th scope="col">Linka</th>
@@ -22,6 +28,13 @@
       <th scope="col">Zpoždění</th>
       </thead>
       <tbody>
+
+      <tr v-if="timeFromLastRespond > 1.5">
+        <td class="table-danger" colspan="5">
+          Nelze aktualizovat data. Poslední aktualizace: <format-date-time :datetime="stationData.dataGenerated" :datetimeFormat="'HH:mm:ss'"/>
+        </td>
+      </tr>
+
       <tr v-for="station in stationData.departures" :key="station.id" :class="{'arrival' : station.endStation === stationData.stationName}" v-show="station.endStation !== stationData.stationName || showArrivals">
         <th>
           <div class="line">
@@ -63,10 +76,12 @@
 <script>
 import TheTime from "../components/TheTime";
 import Toggle from "@vueform/toggle";
+import { DateTime, Interval } from "luxon";
+import FormatDateTime from "../components/FormatDateTime";
 
 export default {
   name: "Station",
-  components: { TheTime, Toggle },
+  components: { FormatDateTime, TheTime, Toggle },
   data() {
     return {
       stationData: [],
@@ -74,7 +89,9 @@ export default {
       error: null,
       url: process.env.VUE_APP_ROOT_API + "zastavky/" + this.$route.params.stationId,
       information: null,
-      showArrivals: true
+      showArrivals: true,
+      errors: [],
+      timeFromLastRespond: 0,
     };
   },
   created() {
@@ -84,8 +101,22 @@ export default {
   },
   methods: {
     async callStationData() {
-      const response = await fetch(this.url);
-      this.stationData = await response.json();
+      try {
+        const response = await fetch(this.url);
+        if (response.ok) {
+          this.stationData = await response.json();
+          this.errors = [];
+        } else {
+          this.errors.push("Spoje se nepodařilo načíst");
+          this.errors.push(response.status);
+        }
+      } catch (e) {
+        this.errors = [];
+        this.errors.push("Spoje se nepodařilo načíst");
+        this.errors.push(e.toString());
+      }
+
+      this.timeFromLastRespond = Interval.fromDateTimes(DateTime.fromISO(this.stationData.dataGenerated), DateTime.now()).length("minutes");
     },
     changeShowArrivals() {
       this.$cookie.setCookie("showArrivals", this.showArrivals);

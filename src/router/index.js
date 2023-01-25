@@ -37,11 +37,16 @@ const routes = [
     path: "/changelog",
     name: "changelog",
     component: () => import("../views/Changelog")
+  },
+  {
+    path: "/dispecer",
+    name: "dispecer",
+    component: () => import("../views/Dispatch")
   }
 ];
 
 const router = createRouter({
-  history: createWebHistory('/simt-tabule-vue/'),
+  history: createWebHistory('/'),
   routes,
 });
 

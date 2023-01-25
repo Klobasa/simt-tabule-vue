@@ -24,9 +24,9 @@
       <img src="../assets/loading.gif" width="24"/>
       Načítání...
     </div>
-    <div class="alert alert-danger" v-if="loading === false && stations.length === 0">
+    <div class="alert alert-danger" v-for="error in errors" :key="error">
       <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-      Seznam zastávek se nepodařilo načíst
+      {{ error }}
     </div>
 
     <div class="boardData" v-for="station in filteredStations.stations || filteredStations" :key="station.id">
@@ -63,6 +63,7 @@ export default {
       queryStation: "",
       filteredStations: [],
       loading: true,
+      errors: [],
     };
   },
   created() {
@@ -71,9 +72,20 @@ export default {
   methods: {
     async callData() {
       this.loading = true;
-      const response = await fetch(process.env.VUE_APP_ROOT_API + "zastavky")
-      this.stations = await response.json();
-      this.filteredStations = this.stations;
+      try {
+        const response = await fetch(process.env.VUE_APP_ROOT_API + "zastavky");
+        if(response.ok) {
+          this.stations = await response.json();
+          this.filteredStations = this.stations;
+        } else {
+          this.errors.push("Seznam zastávek se nepodařilo načíst");
+          this.errors.push(response.status);
+        }
+      } catch (e) {
+        this.errors.push("Seznam zastávek se nepodařilo načíst");
+        this.errors.push(e.toString());
+      }
+
       this.loading = false;
     },
     async filterStations() {

@@ -57,13 +57,14 @@
           </div>
         </div>
         <div class="col-sm-6 col-md-2">
-          <div class="d-inline-block"><b>{{ trip.actualStation.station }}</b></div>
+          <div class="d-inline-block">
+            <b>{{ trip.actualStation.station }}</b> <small>({{ trip.actualStation.departure }})</small>
+          </div>
         </div>
 
         <div class="col-sm-6 col-md-2">
           <div class="d-inline-block">
             <delay-counter :departure="trip.departureFromActualStation" v-if="trip.departureFromActualStation != null"></delay-counter>
-            <small>{{ trip.actualStation.departure }}</small>
           </div>
         </div>
 
@@ -92,7 +93,7 @@ export default {
   },
   methods: {
     async callData() {
-      const response = await fetch(process.env.VUE_APP_ROOT_API + "spoj");
+      const response = await fetch(process.env.VUE_APP_ROOT_API + "spoj?man=false");
       this.trips = await response.json();
       this.loading = false;
     }

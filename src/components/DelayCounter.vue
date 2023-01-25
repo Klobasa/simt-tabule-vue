@@ -59,7 +59,7 @@ export default {
         }
 
       }
-      this.interval = setInterval(() => this.countOdchylka(), 1000)
+      this.interval = setInterval(() => this.countOdchylka(), 50)
     }
   },
   beforeUnmount() {

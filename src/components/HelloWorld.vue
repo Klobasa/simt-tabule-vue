@@ -22,6 +22,11 @@
         <router-link to="/changelog">Changelog</router-link>
       </li>
     </ul>
+    <ul>
+      <li>
+        <router-link to="/dispecer">Dispečer</router-link>
+      </li>
+    </ul>
   </div>
 </template>
 
