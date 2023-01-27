@@ -28,9 +28,14 @@
       <img src="../assets/loading.gif" width="24"/>
       Načítání...
     </div>
-    <div class="alert alert-danger" v-if="loading === false && trips.length === 0">
+    <div class="alert alert-info" v-if="loading === false && trips.length === 0">
       <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-      Seznam spojů se nepodařilo načíst nebo nejede žádný spoj
+      Nejede žádný spoj
+    </div>
+
+    <div class="alert alert-danger" v-for="error in errors" :key="error">
+      <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+      {{ error }}
     </div>
 
 
@@ -85,6 +90,7 @@ export default {
       trips: [],
       timeInterval: null,
       loading: true,
+      errors: [],
     };
   },
   created() {
@@ -93,8 +99,20 @@ export default {
   },
   methods: {
     async callData() {
-      const response = await fetch(process.env.VUE_APP_ROOT_API + "spoj?man=false");
-      this.trips = await response.json();
+      try {
+        const response = await fetch(process.env.VUE_APP_ROOT_API + "spoj?man=false");
+        if(response.ok) {
+          this.trips = await response.json();
+          this.errors = [];
+        } else {
+          this.errors.push("Spoje se nepodařilo načíst");
+          this.errors.push(response.status);
+        }
+      } catch (e) {
+        this.errors = [];
+        this.errors.push("Spoje se nepodařilo načíst");
+        this.errors.push(e.toString());
+      }
       this.loading = false;
     }
   },

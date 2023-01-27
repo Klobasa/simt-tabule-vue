@@ -15,6 +15,12 @@
         Poslední aktualizace dat: <format-date-time :datetime="timetables.dataGenerated" :datetimeFormat="'dd.MM.yyyy HH:mm:ss'" />
       </div>
     </div>
+
+    <div class="alert alert-danger" v-for="error in errors" :key="error">
+      <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+      {{ error }}
+    </div>
+
     <div class="boardData col-12 col-md-6" v-for="timetable in timetables.timelines" :key="timetable.lineNumber">
       <time-table :timetable="timetable"></time-table>
     </div>
@@ -29,7 +35,8 @@ export default {
   components: { TimeTable, FormatDateTime },
   data() {
     return {
-      timetables: []
+      timetables: [],
+      errors: [],
     };
   },
   created() {
@@ -37,8 +44,20 @@ export default {
   },
   methods: {
     async callData() {
-      const response = await fetch(process.env.VUE_APP_ROOT_API + "jizdnidoby");
-      this.timetables = await response.json();
+      try {
+        const response = await fetch(process.env.VUE_APP_ROOT_API + "jizdnidoby");
+        if (response.ok) {
+          this.timetables = await response.json();
+          this.errors = [];
+        } else {
+          this.errors.push("Jízdní doby se nepodařilo načíst");
+          this.errors.push(response.status);
+        }
+      } catch (e) {
+        this.errors = [];
+        this.errors.push("Jízdní doby se nepodařilo načíst");
+        this.errors.push(e.toString());
+      }
     }
   }
 };

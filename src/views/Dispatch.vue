@@ -41,6 +41,7 @@
     <div class="boardHeader d-none d-sm-flex">
       <div class="col-12">
         <p>Přihlášení pro dispečery SIMT - ježdění</p>
+        <p v-for="error in errors" :key="error" style="color: #f08080">{{ error }}</p>
         <a :href="discordUrl">
           <img src="../assets/discord-login.png" height="50">
         </a>
@@ -60,6 +61,20 @@
       <th scope="col">Odchylka</th>
       <th scope="col"></th>
       </thead>
+      <tbody>
+      <tr v-if="timeFromLastRespond > 1.0">
+        <td style="background-color: #f08080" colspan="8">
+          <svg class="bi flex-shrink-0 me-2" width="18" height="18" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+          <b>Nelze aktualizovat data. Poslední aktualizace: <format-date-time :datetime="trips.timeGenerated" :datetimeFormat="'HH:mm:ss'"/></b>
+        </td>
+      </tr>
+      <tr v-for="error in errors" :key="error">
+        <td style="background-color: #f08080" colspan="8" v-if="trips.length === 0">
+          <svg class="bi flex-shrink-0 me-2" width="18" height="18" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+          {{ error }}
+        </td>
+      </tr>
+      </tbody>
       <draggable v-model="players" tag="tbody" item-key="nick" @change="regeneratePlayers">
       <!--  <tr v-for="showPlayer in players" :key="showPlayer.nick"> -->
         <template #item="{ element }">
@@ -77,11 +92,13 @@
 import { useRoute } from "vue-router";
 import draggable from "vuedraggable";
 import DispatchPlayerDiv from "../components/DispatchPlayerDiv";
+import { DateTime, Interval } from "luxon";
+import FormatDateTime from "../components/FormatDateTime";
 
 //import { computed, ref } from "vue";
 export default {
   name: "Dispatch.vue",
-  components: { DispatchPlayerDiv, draggable },
+  components: { FormatDateTime, DispatchPlayerDiv, draggable },
   data() {
     return {
       authentication: [],
@@ -95,10 +112,8 @@ export default {
       errors: [],
       drag: false,
       randomString: this.stringGenerator(15),
-      //discordUrl: "https://discord.com/oauth2/authorize?response_type=token&client_id=1051915606359814164&state="+this.randomString+"&scope=identify%20guilds.members.read&redirect_uri="+process.env.VUE_APP_ROOT_API+"dispecer"
-      //discordUrl: "https://discord.com/oauth2/authorize?response_type=token&client_id=1051915606359814164&redirect_uri=http%3A%2F%2F130.162.227.173%2Fdispecer&scope=identify%20guilds.members.read"
-      discordUrl: "https://discord.com/oauth2/authorize?response_type=token&client_id=1051915606359814164&scope=identify%20guilds.members.read&redirect_uri="
-
+      discordUrl: "https://discord.com/oauth2/authorize?response_type=token&client_id=1051915606359814164&scope=identify%20guilds.members.read&redirect_uri=",
+      timeFromLastRespond: 0,
     };
   },
 
@@ -162,7 +177,7 @@ export default {
       this.getAuthentication(path);
     }
     if (this.$cookie.isCookieAvailable("access_token")) {
-      this.logged = this.isUserDispatcher(this.$cookie.getCookie("access_token"));
+      this.isUserDispatcher(this.$cookie.getCookie("access_token"));
     }
 
     let players = [];
@@ -198,6 +213,8 @@ export default {
         this.errors.push("Spoje se nepodařilo načíst");
         this.errors.push(e.toString());
       }
+      console.log(this.logged);
+      this.timeFromLastRespond = Interval.fromDateTimes(DateTime.fromISO(this.trips.timeGenerated), DateTime.now()).length("minutes");
 
     },
 
