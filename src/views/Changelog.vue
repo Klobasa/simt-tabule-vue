@@ -1,6 +1,12 @@
 <template>
  <h1>Changelog</h1>
 
+  <h5>Březen 2023</h5>
+    <p>Fotka na pozadí je přes celou obrazovku a nescroluje se</p>
+    <p>Rozumné formátování pro mobil na stránce dispečera a aktuálních spojů</p>
+    <p>Na stránce spojů je nyní pořadí Výchozí zastávka -> Aktuální zastávka -> Konečná zastávka</p>
+    <p>Přidaná chybová hláška při přihlášení přes discord, pokud uživatel není členem serveru nebo se při přihlašování vyskytne chyba.</p>
+
   <h5>27. 1. 2023</h5>
     <p>V jízdních dobách opravena chyba s duplicitních zobrazením zastávek vzniká po změně databáze.</p>
     <p>Chybové hlášky při výpadku backendu přidány na všechny stránky</p>

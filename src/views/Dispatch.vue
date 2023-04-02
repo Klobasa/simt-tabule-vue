@@ -14,10 +14,14 @@
   </div>
 
   <div class="secondary" v-if="logged">
-    <div class="align-items-center row flex-fill">
-        <div class="col-md-2 col-sm-6 input-group">
-          <span class="input-group-text" id="nickInput">Nick</span>
-          <input type="text" class="form-control" placeholder="" aria-label="Nick" aria-describedby="nickInput" id="search" v-model="formPlayer">
+    <div class="align-items-start col-12 col-md-3">
+      <form ref="addPlayer">
+        <div class="mb-0">
+          <label for="search" class="visually-hidden">Nick</label>
+          <div class="input-group">
+            <div class="input-group-text">Nick</div>
+            <input type="text" class="form-control" placeholder="" id="search" v-model="formPlayer">
+          </div>
           <!--
           <ul v-if="searchNicks.length" class="w-full rounded bg-white border border-gray-300 px-4 py-2 space-y-1 absolute z-10">
             <li v-for="nick in searchNicks" :key="nick" class="cursor-pointer hover:bg-gray-100 p-1">
@@ -26,19 +30,21 @@
           </ul>
           -->
         </div>
-        <div class="col-md-6 col-sm-6 input-group mb-3">
-          <span class="input-group-text" id="sluzbaInput">Služba</span>
-          <input type="text" class="form-control" placeholder="" aria-label="Sluzba" aria-describedby="sluzbaInput" id="sluzba" v-model="formSluzba">
+        <div class="mb-0">
+          <label for="sluzba" class="visually-hidden">Služba</label>
+          <div class="input-group">
+            <div class="input-group-text">Služba</div>
+            <input type="text" class="form-control" placeholder="" id="sluzba" v-model="formSluzba">
+          </div>
         </div>
-        <div class="col-md-1 col-sm-12 input-group mb-3">
-          <button type="button" class="btn btn-primary" @click="addPlayer">Přidat</button>
-        </div>
+        <button type="button" class="btn btn-primary" @click="addPlayer">Přidat</button>
+      </form>
 
     </div>
   </div>
 
   <div class="board" v-if="!logged">
-    <div class="boardHeader d-none d-sm-flex">
+    <div class="boardHeader d-flex">
       <div class="col-12">
         <p>Přihlášení pro dispečery SIMT - ježdění</p>
         <p v-for="error in errors" :key="error" style="color: #f08080">{{ error }}</p>
@@ -51,7 +57,7 @@
 
   <div class="board" v-if="logged">
     <table class="table table-hover">
-      <thead>
+      <thead class="d-none d-md-table-row">
       <th scope="col">Hráč</th>
       <th scope="col">Služba</th>
       <th scope="col">Linka</th>
@@ -213,9 +219,7 @@ export default {
         this.errors.push("Spoje se nepodařilo načíst");
         this.errors.push(e.toString());
       }
-      console.log(this.logged);
       this.timeFromLastRespond = Interval.fromDateTimes(DateTime.fromISO(this.trips.timeGenerated), DateTime.now()).length("minutes");
-
     },
 
     getAuthentication(path) {
@@ -231,23 +235,33 @@ export default {
     },
 
     async isUserDispatcher(token) {
-      const response = await fetch("https://discord.com/api/users/@me/guilds/697876355269787668/member", {
-        method: "GET",
-        headers: {
-          "Authorization": "Bearer " + token
-        }
-      });
-      const user = await response.json();
+      try {
+        const response = await fetch("https://discord.com/api/users/@me/guilds/697876355269787668/member", {
+          method: "GET",
+          headers: {
+            "Authorization": "Bearer " + token
+          }
+        });
+        if (response.ok) {
+          const user = await response.json();
 
-      const dispatcherUsers = process.env.VUE_APP_DISCORD_USER_DISPATCHER.split(",");
-      if (user.roles.includes(process.env.VUE_APP_DISCORD_ROLE_DISPECER)
-        || user.roles.includes(process.env.VUE_APP_DISCORD_ROLE_ZASKOLENA)
-        //   || user.roles.includes(process.env.VUE_APP_DISCORD_ROLE_DEVELOPMENT)
-        || dispatcherUsers.includes(user.user.id)
-      ) {
-        this.logged = true;
-      } else {
+          const dispatcherUsers = process.env.VUE_APP_DISCORD_USER_DISPATCHER.split(",");
+          if (user.roles.includes(process.env.VUE_APP_DISCORD_ROLE_DISPECER)
+            || user.roles.includes(process.env.VUE_APP_DISCORD_ROLE_ZASKOLENA)
+            //   || user.roles.includes(process.env.VUE_APP_DISCORD_ROLE_DEVELOPMENT)
+            || dispatcherUsers.includes(user.user.id)
+          ) {
+            this.logged = true;
+          } else {
+            this.errors.push("Nemáte oprávnění k přístupu");
+          }
+        } else {
+          this.errors.push("Nemáte oprávnění k přístupu");
+          return;
+        }
+      } catch (e) {
         this.errors.push("Nemáte oprávnění k přístupu");
+        return;
       }
     },
 
@@ -263,8 +277,7 @@ export default {
       cookiePlayers = cookiePlayers + "¥" + this.players.length + "₱" + this.formPlayer + "₱" + this.formSluzba;
       this.$cookie.setCookie("filteredPlayers", cookiePlayers);
       this.players.push({id: this.players.length, nick: this.formPlayer, sluzba: this.formSluzba});
-      document.getElementById("search").value = "";
-      document.getElementById("sluzba").sluzba = "";
+      this.$refs.addPlayer.reset();
     },
 
     removePlayer(playerId) {
@@ -323,7 +336,6 @@ export default {
          // console.log(tripPlayer);
           array[i] = { nick: split2[0], sluzba: split2[1] };
         }
-        console.log(array);
         return array;
       } else {
         return "";
@@ -333,3 +345,9 @@ export default {
   }
  };
 </script>
+
+<style scoped>
+.input-group-text {
+  min-width: 50px !important;
+}
+</style>

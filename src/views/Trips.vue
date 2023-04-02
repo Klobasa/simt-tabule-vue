@@ -15,12 +15,12 @@
   </div>
 
   <div class="board">
-    <div class="boardHeader d-none d-sm-flex">
-      <div class="col-12 col-sm-2">Linka</div>
-      <div class="col-sm-6 col-md-2">Výchozí zastávka</div>
-      <div class="col-12 col-sm-6 col-md-3">Cílová zastávka</div>
-      <div class="col-sm-6 col-md-2">Aktuální zastávka</div>
-      <div class="col-sm-6 col-md-2">Odchylka</div>
+    <div class="boardHeader d-none d-md-flex">
+      <div class="col-2"><strong>Linka</strong></div>
+      <div class="col-3"><strong>Výchozí zastávka</strong></div>
+      <div class="col-3"><strong>Aktuální zastávka</strong></div>
+      <div class="col-3"><strong>Cílová zastávka</strong></div>
+      <div class="col-1"><strong>Odchylka</strong></div>
 
     </div>
 
@@ -42,7 +42,32 @@
     <div class="boardData" :class="[trip.line.traction === 2 ? 'tram' : trip.line.traction === 1 ? 'trolleybus' : trip.line.traction === 0 ? 'bus' : 'tractionUndefined']" v-for="trip in trips.tripHeader" :key="trip.id">
       <div class="boardDataPrimary">
 
-        <div class="col-12 col-sm-2">
+        <!-- Smaller than md -->
+        <div class="col-12 d-md-none d-flex">
+          <div class="line flex-shrink-0">
+            <div class="px-2 py-1 mr-1" :class="[trip.line.traction === 2 ? 'tram' : trip.line.traction === 1 ? 'trolleybus' : trip.line.traction === 0 ? 'bus' : 'tractionUndefined']">
+              <router-link :to="{path: '/spoj/' + trip.id}"><span class="biggerFont boardButton">{{ trip.line.line }}&nbsp;</span></router-link>
+              <img src="../assets/line/tram.svg" alt="" v-if="trip.line.traction === 2">
+              <img src="../assets/line/trolleybus.svg" alt="" v-if="trip.line.traction === 1">
+              <img src="../assets/line/bus.svg" alt="" v-if="trip.line.traction === 0">
+            </div>
+          </div>
+
+          <div class="d-flex flex-wrap align-items-center">
+            <div v-if="trip.startStation !== null">
+              {{ trip.startStation.station }} <small>({{ trip.startStation.departure }})</small>&nbsp;
+            </div>
+            <div v-if="trip.endStation !== null">
+              » <b>{{ trip.endStation.station }}</b> <small>({{ trip.endStation.departure }})</small>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 d-md-none d-flex py-1 align-content-center">
+          {{ trip.actualStation.station }}&nbsp;<small>({{ trip.actualStation.departure }})</small>
+          &nbsp;<delay-counter :departure="trip.departureFromActualStation" v-if="trip.departureFromActualStation != null"></delay-counter>
+        </div>
+
+        <div class="col-2 d-none d-md-block">
           <div class="line d-inline-block">
             <div class="px-2 py-1 mr-1" :class="[trip.line.traction === 2 ? 'tram' : trip.line.traction === 1 ? 'trolleybus' : trip.line.traction === 0 ? 'bus' : 'tractionUndefined']">
               <router-link :to="{path: '/spoj/' + trip.id}"><span class="biggerFont boardButton">{{ trip.line.line }}&nbsp;</span></router-link>
@@ -53,21 +78,23 @@
           </div>
         <!--  <div class="line"><span class="boardButton" :class="trip.line.traction">{{ trip.line.line }} » {{ trip.endStation }}</span></div> -->
         </div>
-        <div class="col-sm-6 col-md-2">
-          <small>{{ trip.startStation.station }} ({{ trip.startStation.departure }})</small>
+
+
+        <div class="col-3 d-none d-md-block">
+          <b>{{ trip.startStation.station }}</b> <small>({{ trip.startStation.departure }})</small>
         </div>
-        <div class="col-12 col-sm-6 col-md-3 d-flex flex-row align-items-start flex-wrap">
+        <div class="col-3 d-none d-md-block">
+          <div class="d-inline-block" v-if="trip.actualStation !== null">
+            {{ trip.actualStation.station }} <small>({{ trip.actualStation.departure }})</small>
+          </div>
+        </div>
+        <div class="col-3 d-none d-md-block">
           <div class="d-inline-block" v-if="trip.endStation !== null">
             » <b>{{ trip.endStation.station }}</b> <small>({{ trip.endStation.departure }})</small>
           </div>
         </div>
-        <div class="col-sm-6 col-md-2">
-          <div class="d-inline-block">
-            <b>{{ trip.actualStation.station }}</b> <small>({{ trip.actualStation.departure }})</small>
-          </div>
-        </div>
 
-        <div class="col-sm-6 col-md-2">
+        <div class="col-1 d-none d-md-block">
           <div class="d-inline-block">
             <delay-counter :departure="trip.departureFromActualStation" v-if="trip.departureFromActualStation != null"></delay-counter>
           </div>
