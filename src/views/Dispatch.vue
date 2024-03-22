@@ -248,6 +248,7 @@ export default {
           const dispatcherUsers = process.env.VUE_APP_DISCORD_USER_DISPATCHER.split(",");
           if (user.roles.includes(process.env.VUE_APP_DISCORD_ROLE_DISPECER)
             || user.roles.includes(process.env.VUE_APP_DISCORD_ROLE_ZASKOLENA)
+            || user.roles.includes(process.env.VUE_APP_DISCORD_ROLE_DISPECER_ZACVIK)
             //   || user.roles.includes(process.env.VUE_APP_DISCORD_ROLE_DEVELOPMENT)
             || dispatcherUsers.includes(user.user.id)
           ) {
